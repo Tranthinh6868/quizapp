@@ -26,7 +26,7 @@ public class QuestionController {
         return questionService.getQuestion(QuestionId);
     }
 
-    @PostMapping
+    @PostMapping("add")
     public Question createQuestion(@RequestBody Question question) {
         return questionService.createQuestion(question);
     }
