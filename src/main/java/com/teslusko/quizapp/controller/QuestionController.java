@@ -1,5 +1,6 @@
-package com.teslusko.quizapp;
+package com.teslusko.quizapp.controller;
 
+import com.teslusko.quizapp.Question;
 import com.teslusko.quizapp.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
