@@ -5,6 +5,7 @@ import com.teslusko.quizapp.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,5 +50,15 @@ public class QuestionService {
 
     public void deleteQuestion(Integer id) {
         questionRepository.deleteById(id);
+    }
+
+    public List<Question> getQuestionByCategory(String category) {
+        List<Question> questions = new ArrayList<Question>();
+        for(Question q: questionRepository.findAll()) {
+            if(q.getCategory().equals(category)) {
+                questions.add(q);
+            }
+        }
+        return questions;
     }
 }

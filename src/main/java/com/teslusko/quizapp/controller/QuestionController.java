@@ -2,7 +2,10 @@ package com.teslusko.quizapp.controller;
 
 import com.teslusko.quizapp.Question;
 import com.teslusko.quizapp.service.QuestionService;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +41,10 @@ public class QuestionController {
         questionService.deleteQuestion(Id);
         return "Question deleted";
     }
-
+    @GetMapping("/category/{category}")
+    public List<Question> getQuestionsByCategory(@PathVariable String category) {
+        return questionService.getQuestionByCategory(category);
+    }
 
 
 }
