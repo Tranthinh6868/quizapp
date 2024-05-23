@@ -33,6 +33,12 @@ public class QuestionController {
         return questionService.updateQuestion(Id, question);
     }
 
+    @DeleteMapping("/{Id}")
+    public String deleteQuestion(@PathVariable Integer Id) {
+        questionService.deleteQuestion(Id);
+        return "Question deleted";
+    }
+
 
 
 }
