@@ -3,8 +3,11 @@ package com.teslusko.quizapp.service;
 import com.teslusko.quizapp.Question;
 import com.teslusko.quizapp.dao.QuestionDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,23 +16,40 @@ public class QuestionService {
     @Autowired
     public QuestionDao questionDao;
 
-    public List<Question> getAllQuestions() {
-
-          return questionDao.findAll();
+    public ResponseEntity<List<Question>> getAllQuestions() {
+    try {
+        return new ResponseEntity<>(questionDao.findAll(), HttpStatus.OK);
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
 
-    public Question getQuestion(int questionId) {
-        return questionDao.findById(questionId).get();
+    public ResponseEntity<Question> getQuestion(int questionId) {
+        try {
+            return new ResponseEntity<>(questionDao.findById(questionId).get(),HttpStatus.OK);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new Question(), HttpStatus.BAD_REQUEST);
     }
 
-    public Question createQuestion(Question question) {
+    public ResponseEntity<Question> createQuestion(Question question) {
         Question savedQuestion = questionDao.save(question);
-        return getQuestion(savedQuestion.getId());
+        try {
+            return new ResponseEntity<>(getQuestion(savedQuestion.getId()).getBody(),HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new Question(), HttpStatus.BAD_REQUEST);
 
     }
 
-    public Question updateQuestion(Integer id, Question question) {
-        List<Question> questions = getAllQuestions();
+    public ResponseEntity<Question> updateQuestion(Integer id, Question question) {
+        List<Question> questions = getAllQuestions().getBody();
         for(Question q: questions) {
             if(q.getId().equals(id)) {
                 q.setCategory(question.getCategory());
@@ -41,18 +61,36 @@ public class QuestionService {
                 q.setDifficultyLevel(question.getDifficultyLevel());
                 q.setRightAnswer(question.getRightAnswer());
                 questionDao.save(q);
-                return getQuestion(id);
+                try {
+                    return new ResponseEntity<>(getQuestion(id).getBody(), HttpStatus.OK);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        return null;
+        return new ResponseEntity<>(new Question(), HttpStatus.BAD_REQUEST);
     }
 
-    public void deleteQuestion(Integer id) {
-        questionDao.deleteById(id);
+    public ResponseEntity<String> deleteQuestion(Integer id) {
+        try {
+            questionDao.deleteById(id);
+            return new ResponseEntity<>("Question deleted", HttpStatus.OK);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Question can not deleted", HttpStatus.BAD_REQUEST);
     }
 
-    public List<Question> getQuestionByCategory(String category) {
-        return questionDao.findByCategory(category);
+    public ResponseEntity<List<Question>> getQuestionByCategory(String category) {
+        try {
+            return new ResponseEntity<>(questionDao.findByCategory(category), HttpStatus.OK);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
 //        List<Question> questions = new ArrayList<Question>();
 //        for(Question q: questionDao.findAll()) {
 //            if(q.getCategory().equals(category)) {
