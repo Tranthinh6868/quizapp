@@ -1,30 +1,29 @@
 package com.teslusko.quizapp.service;
 
 import com.teslusko.quizapp.Question;
-import com.teslusko.quizapp.repository.QuestionRepository;
+import com.teslusko.quizapp.dao.QuestionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class QuestionService {
 
     @Autowired
-    public QuestionRepository questionRepository;
+    public QuestionDao questionDao;
 
     public List<Question> getAllQuestions() {
 
-          return questionRepository.findAll();
+          return questionDao.findAll();
     }
 
     public Question getQuestion(int questionId) {
-        return questionRepository.findById(questionId).get();
+        return questionDao.findById(questionId).get();
     }
 
     public Question createQuestion(Question question) {
-        Question savedQuestion = questionRepository.save(question);
+        Question savedQuestion = questionDao.save(question);
         return getQuestion(savedQuestion.getId());
 
     }
@@ -41,7 +40,7 @@ public class QuestionService {
                 q.setOption4(question.getOption4());
                 q.setDifficultyLevel(question.getDifficultyLevel());
                 q.setRightAnswer(question.getRightAnswer());
-                questionRepository.save(q);
+                questionDao.save(q);
                 return getQuestion(id);
             }
         }
@@ -49,16 +48,17 @@ public class QuestionService {
     }
 
     public void deleteQuestion(Integer id) {
-        questionRepository.deleteById(id);
+        questionDao.deleteById(id);
     }
 
     public List<Question> getQuestionByCategory(String category) {
-        List<Question> questions = new ArrayList<Question>();
-        for(Question q: questionRepository.findAll()) {
-            if(q.getCategory().equals(category)) {
-                questions.add(q);
-            }
-        }
-        return questions;
+        return questionDao.findByCategory(category);
+//        List<Question> questions = new ArrayList<Question>();
+//        for(Question q: questionDao.findAll()) {
+//            if(q.getCategory().equals(category)) {
+//                questions.add(q);
+//            }
+//        }
+//        return questions;
     }
 }
