@@ -28,4 +28,9 @@ public class QuestionController {
         return questionService.createQuestion(question);
     }
 
+    @PostMapping("/{Id}")
+    public Question updateQuestion(@PathVariable Integer Id, @RequestBody Question question) {
+        return questionService.updateQuestion(Id, question);
+    }
+
 }
