@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Quiz {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String title;
     @ManyToMany
