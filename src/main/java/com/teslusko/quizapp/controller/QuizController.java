@@ -1,7 +1,9 @@
 package com.teslusko.quizapp.controller;
 
+import com.teslusko.quizapp.model.Question;
 import com.teslusko.quizapp.model.QuestionWrapper;
 import com.teslusko.quizapp.model.Quiz;
+import com.teslusko.quizapp.model.Response;
 import com.teslusko.quizapp.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,5 +34,9 @@ public class QuizController {
     @GetMapping
     public ResponseEntity<List<Quiz>> getAllQuiz() {
         return quizService.getAllQuiz();
+    }
+    @PostMapping("submit/{id}")
+    public ResponseEntity<Integer> submitQuestion(@PathVariable Integer id, @RequestBody List<Response> responseList) {
+        return quizService.submitQuestion(id, responseList);
     }
 }

@@ -5,6 +5,7 @@ import com.teslusko.quizapp.dao.QuizDao;
 import com.teslusko.quizapp.model.Question;
 import com.teslusko.quizapp.model.QuestionWrapper;
 import com.teslusko.quizapp.model.Quiz;
+import com.teslusko.quizapp.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,5 +75,20 @@ public class QuizService {
             e.printStackTrace();
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<Integer> submitQuestion(Integer id, List<Response> responses) {
+        List<Question> questions = quizDao.findById(id).get().getQuestions();
+        int score = 0;
+        int i =0;
+
+        for (Question question : questions) {
+            if(question.getRightAnswer().equals(responses.get(i).getResponse())){
+                score ++;
+            }
+            i++;
+        }
+        return new ResponseEntity<>(score,HttpStatus.OK);
+
     }
 }

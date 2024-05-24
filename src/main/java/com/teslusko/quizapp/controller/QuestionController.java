@@ -2,6 +2,7 @@ package com.teslusko.quizapp.controller;
 
 import com.teslusko.quizapp.model.Question;
 import com.teslusko.quizapp.service.QuestionService;
+import com.teslusko.quizapp.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,9 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private QuizService quizService;
+
     @GetMapping("allQuestions")
     public ResponseEntity<List<Question>> getAllQuestions() {
         return questionService.getAllQuestions();
@@ -43,6 +47,8 @@ public class QuestionController {
     public ResponseEntity<List<Question>> getQuestionsByCategory(@PathVariable String category) {
         return questionService.getQuestionByCategory(category);
     }
+
+
 
 
 }
