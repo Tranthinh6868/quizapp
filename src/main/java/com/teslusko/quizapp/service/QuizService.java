@@ -3,12 +3,14 @@ package com.teslusko.quizapp.service;
 import com.teslusko.quizapp.dao.QuestionDao;
 import com.teslusko.quizapp.dao.QuizDao;
 import com.teslusko.quizapp.model.Question;
+import com.teslusko.quizapp.model.QuestionWrapper;
 import com.teslusko.quizapp.model.Quiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,9 +30,24 @@ public class QuizService {
         return new ResponseEntity<String>("Quiz has been created.",HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Quiz> getQuizById(int id) {
+    public ResponseEntity<List<QuestionWrapper>> getQuizById(Integer id) {
         try {
-            return new ResponseEntity<Quiz>(quizDao.findById(id).get(), HttpStatus.OK);
+
+            Quiz quiz = quizDao.findById(id).get();
+            List<Question> questions = quiz.getQuestions();
+            List<QuestionWrapper> questionWrappers = new ArrayList<QuestionWrapper>();
+            for (Question question : questions) {
+                QuestionWrapper questionWrapper = new QuestionWrapper();
+                questionWrapper.setId(question.getId());
+                questionWrapper.setQuestionTitle(question.getQuestionTitle());
+                questionWrapper.setOption1(question.getOption1());
+                questionWrapper.setOption2(question.getOption2());
+                questionWrapper.setOption3(question.getOption3());
+                questionWrapper.setOption4(question.getOption4());
+                questionWrappers.add(questionWrapper);
+            }
+
+            return new ResponseEntity<List<QuestionWrapper>>(questionWrappers, HttpStatus.OK);
         }
         catch (Exception e) {
             e.printStackTrace();

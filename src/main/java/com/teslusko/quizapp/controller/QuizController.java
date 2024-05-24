@@ -1,5 +1,6 @@
 package com.teslusko.quizapp.controller;
 
+import com.teslusko.quizapp.model.QuestionWrapper;
 import com.teslusko.quizapp.model.Quiz;
 import com.teslusko.quizapp.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class QuizController {
                                              @RequestParam String title) {
            return quizService.createQuiz(category,numQ, title);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Quiz> getQuizById(@PathVariable Integer id) {
+    @GetMapping("/get/{id}")
+    public ResponseEntity<List<QuestionWrapper>> getQuizById(@PathVariable Integer id) {
         return  quizService.getQuizById(id);
     }
     @DeleteMapping("{id}")
